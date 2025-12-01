@@ -9,6 +9,8 @@ def main():
     dlg = gui.Dlg(title="Experiment Launcher")
     dlg.addField("Subject ID:")
     dlg.addField("Session:")
+    dlg.addField("Language:", choices=["en", "de"])
+    dlg.addField("Only run demo:", choices=["yes", "no"])
     dlg.addField("Select Task:", choices=["cross", "movie", "beliefs"])
 
     user_input = dlg.show()
@@ -18,10 +20,12 @@ def main():
 
     subject_id = user_input[0]
     session = user_input[1]
-    task_choice = user_input[2]
+    language = user_input[2]
+    demo = user_input[3]
+    task_choice = user_input[4]
 
     # -----------------------------
-    # Special extra GUI for Task 1
+    # Special extra GUI for beliefs
     # -----------------------------
     run_number = None
     if task_choice == "beliefs":
@@ -54,9 +58,9 @@ def main():
 
         # Call correct version of the task
         if task_choice == "beliefs":
-            task_module.run_task(subject_id, session, run_number)
+            task_module.run_task(subject_id, session, language, demo, run_number)
         else:
-            task_module.run_task(subject_id, session)
+            task_module.run_task(subject_id, session, language, demo)
 
         print("Task execution finished.")
     
