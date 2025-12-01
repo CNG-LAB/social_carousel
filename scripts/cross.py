@@ -4,14 +4,12 @@ import pathlib
 import os
 from datetime import datetime
 from utilities import define_keys, Trigger, getConfig
-from psychopy import visual, event, core
+from psychopy import core, logging, visual, event
 
-def run_task(subject_id, session, language, demo):
+def run_task(subject, session, language, demo):
     
     # get directories
     path_to_config = pathlib.Path(__file__).parent.parent
-    print('ello this is path')
-    print(path_to_config)
     filename = os.path.join(path_to_config, "config.json")
     configDirs = getConfig(filename)
 
@@ -72,7 +70,7 @@ def run_task(subject_id, session, language, demo):
     fixOn = mainClock.getTime()
     
     # display fixation for six minutes
-    if demo == yes:
+    if demo == 'demo':
         RS_scanDur = 5
     else:
         RS_scanDur = 360

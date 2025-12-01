@@ -10,7 +10,7 @@ def main():
     dlg.addField("Subject ID:")
     dlg.addField("Session:")
     dlg.addField("Language:", choices=["en", "de"])
-    dlg.addField("Only run demo:", choices=["yes", "no"])
+    dlg.addField("Mode:", choices=["demo", "full"])
     dlg.addField("Select Task:", choices=["cross", "movie", "beliefs"])
 
     user_input = dlg.show()
@@ -38,6 +38,16 @@ def main():
 
         run_number = run_input[0]  # "Run 1" or "Run 2"
 
+    elif task_choice == "movie":
+        dlg2 = gui.Dlg(title="movie options")
+        dlg2.addField("Select movie:", choices=["cloudy", "lotr"])
+        movie_input = dlg2.show()
+
+        if dlg2.OK == False:
+            core.quit()
+
+        movie_id = movie_input[0]  # movie 1 or movie 2
+
     # -----------------------------
     # Map GUI selection → module name
     # -----------------------------
@@ -59,6 +69,8 @@ def main():
         # Call correct version of the task
         if task_choice == "beliefs":
             task_module.run_task(subject_id, session, language, demo, run_number)
+        elif task_choice == "movie":
+            task_module.run_task(subject_id, session, language, demo, movie_id)
         else:
             task_module.run_task(subject_id, session, language, demo)
 
