@@ -1,8 +1,52 @@
 # main.py
 from psychopy import gui, core
 import importlib
+from utilities import getConfig
+import pathlib
+import os
 
 def main():
+    
+    # List of fMRI tasks
+    # This name will appear in the GUI
+    # note: task .py script name must match with one entry in this list (cross -> cross.py)
+    list_of_tasks = ["cross", "movie", "beliefs"]
+
+    # -----------------------------
+    # DIRECTORIES CHECK
+    # -----------------------------
+
+    # Get directories according to config file
+    path_to_config = pathlib.Path(__file__).parent.parent
+    filename = os.path.join(path_to_config, "config.json")
+    configDirs = getConfig(filename)
+    message_repo_dir = 'NOTE: Config file says social carousel repo is here: {this_dir}'.format(this_dir=configDirs['repo_dir'])
+    print(message_repo_dir)
+    message_root_dir = 'NOTE: Config file says your input/output directory is here: {this_dir}'.format(this_dir=configDirs['io_root_dir'])
+    print(message_root_dir)
+    
+    # Check if io (sub)directories exist
+    try:
+
+        if pathlib.Path(configDirs['io_root_dir']).exists():
+            print('Found input/output directory')
+        else:
+            logsDir = os.path.join(configDirs['io_root_dir'], "logs")
+            instructionsDir = os.path.join(configDirs['io_root_dir'], "instructions")
+            stimDir = os.path.join(configDirs['io_root_dir'], "stimuli")
+            if pathlib.Path(logsDir).exists():
+                print('Found logs directory')
+            if pathlib.Path(instructionsDir).exists():
+                print('Found instructions directory')
+            if pathlib.Path(stimDir).exists():
+                print('Found stimuli directory')
+
+    except Exception as e:
+        print("Refer to README in social carousel repo for expected structure.")
+        print("ERROR in directory setup: ")
+        print(e)
+        core.quit()
+
     # -----------------------------
     # GUI SETUP
     # -----------------------------
@@ -11,7 +55,7 @@ def main():
     dlg.addField("Session:")
     dlg.addField("Language:", choices=["en", "de"])
     dlg.addField("Mode:", choices=["demo", "full"])
-    dlg.addField("Select Task:", choices=["cross", "movie", "beliefs"])
+    dlg.addField("Select Task:", choices=list_of_tasks)
 
     user_input = dlg.show()
 
@@ -30,13 +74,13 @@ def main():
     run_number = None
     if task_choice == "beliefs":
         dlg2 = gui.Dlg(title="beliefs options")
-        dlg2.addField("Select run:", choices=["Run 1", "Run 2"])
+        dlg2.addField("Select run:", choices=["1", "2"])
         run_input = dlg2.show()
 
         if dlg2.OK == False:
             core.quit()
 
-        run_number = run_input[0]  # "Run 1" or "Run 2"
+        run_number = run_input[0]
 
     elif task_choice == "movie":
         dlg2 = gui.Dlg(title="movie options")
@@ -46,15 +90,15 @@ def main():
         if dlg2.OK == False:
             core.quit()
 
-        movie_id = movie_input[0]  # movie 1 or movie 2
+        movie_id = movie_input[0]
 
     # -----------------------------
-    # Map GUI selection → module name
+    # Map GUI selection: module name
     # -----------------------------
     task_map = {
-        "cross": "cross",
-        "movie": "movie",
-        "beliefs": "beliefs",
+        list_of_tasks[0]: list_of_tasks[0],
+        list_of_tasks[1] : list_of_tasks[1],
+        list_of_tasks[2] : list_of_tasks[2],
     }
 
     task_module_name = task_map[task_choice]
