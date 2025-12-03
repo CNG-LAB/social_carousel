@@ -64,6 +64,6 @@ Each task leads to a GUI asking the user to select the task run. All participant
 
 # Contributors 💞
 
-Jessica Royer, MPI CBS
-Lorenz Ahle, MPI CBS
-Sofie Valk, MPI CBS
+- Jessica Royer, MPI CBS
+- Lorenz Ahle, MPI CBS
+- Sofie Valk, MPI CBS
