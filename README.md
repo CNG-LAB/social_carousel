@@ -41,7 +41,7 @@ The carousel includes 6 modules. The name of the module is provided as it is nam
 - `movie`: Movies for naturalistic viewing (resting-state)
 - `beliefs`: False beliefs task using short stories ([Dodell-Feder et al., 2011](https://www.sciencedirect.com/science/article/pii/S1053811910016241))
 - `social`: *not yet supported* Social cognition task using geometric shape movies (as implemented in HCP: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
-- `emoinf`: *not yet supported* Emotional inference task using short stories ([Bruneau et al., 2012](https://www.sciencedirect.com/science/article/pii/S0028393211005082))
+- `emoinf`: *not yet supported* Emotional inference task using short stories ([Jacoby et al., 2016](https://www.sciencedirect.com/science/article/pii/S1053811915010472))
 - `emomatch`: *not yet supported* Emotion matching task using face, body, and shape images (as implemented in HCP: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
 
 ### Task-specific notes
