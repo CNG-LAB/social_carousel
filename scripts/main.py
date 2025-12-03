@@ -10,7 +10,7 @@ def main():
     # List of fMRI tasks
     # This name will appear in the GUI
     # note: task .py script name must match with one entry in this list (cross -> cross.py)
-    list_of_tasks = ["cross", "movie", "beliefs"]
+    list_of_tasks = ["cross", "movie", "beliefs", "social", "emoinf", "emomatch"]
 
     # -----------------------------
     # DIRECTORIES CHECK
@@ -50,11 +50,11 @@ def main():
     # -----------------------------
     # GUI SETUP
     # -----------------------------
-    dlg = gui.Dlg(title="Experiment Launcher")
+    dlg = gui.Dlg(title="Social Carousel")
     dlg.addField("Subject ID:")
     dlg.addField("Session:")
-    dlg.addField("Language:", choices=["en", "de"])
-    dlg.addField("Mode:", choices=["demo", "full"])
+    dlg.addField("Language:", choices=["de", "en"])
+    dlg.addField("Mode:", choices=["full", "demo"])
     dlg.addField("Select Task:", choices=list_of_tasks)
 
     user_input = dlg.show()
@@ -69,11 +69,11 @@ def main():
     task_choice = user_input[4]
 
     # -----------------------------
-    # Special extra GUI for beliefs
+    # Special extra GUI for specific tasks
     # -----------------------------
     run_number = None
-    if task_choice == "beliefs":
-        dlg2 = gui.Dlg(title="beliefs options")
+    if task_choice == "beliefs" or task_choice == "social" or task_choice == "emoinf" or task_choice == "emomatch":
+        dlg2 = gui.Dlg(title="localizer options")
         dlg2.addField("Select run:", choices=["1", "2"])
         run_input = dlg2.show()
 
@@ -99,6 +99,9 @@ def main():
         list_of_tasks[0]: list_of_tasks[0],
         list_of_tasks[1] : list_of_tasks[1],
         list_of_tasks[2] : list_of_tasks[2],
+        list_of_tasks[3] : list_of_tasks[3],
+        list_of_tasks[4] : list_of_tasks[4],
+        list_of_tasks[5] : list_of_tasks[5]
     }
 
     task_module_name = task_map[task_choice]
@@ -111,7 +114,7 @@ def main():
         task_module = importlib.import_module(task_module_name)
 
         # Call correct version of the task
-        if task_choice == "beliefs":
+        if task_choice == "beliefs" or task_choice == "social" or task_choice == "emoinf" or task_choice == "emomatch":
             task_module.run_task(subject_id, session, language, demo, run_number)
         elif task_choice == "movie":
             task_module.run_task(subject_id, session, language, demo, movie_id)
