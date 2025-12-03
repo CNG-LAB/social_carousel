@@ -2,23 +2,11 @@
 
 This repository contains all the scripts you need to run the behavioural paradigms for fMRI sequences of the SoCo study (henceforth: the carousel).
 
-The carousel was developed and tested on `PsychoPy 2024.2.5`, and compatibility with other psychopy versions is NOT garanteed. You can download this version [here](https://github.com/psychopy/psychopy/releases/tag/2024.2.5 ). Known issues with older PsychoPy versions in previous tests include trouble with a/v sync which will affect the movies module.
-
-## The tasks 📋
-
-The carousel includes 6 modules:
-- Fixation cross for unconstrained cognition (resting-state) - module `cross`
-- Movies for naturalistic viewing (resting-state) - module `movie`.
-- False beliefs task using short stories - module `beliefs`.
-- *not yet supported* Social cognition task using geometric shape movies 
-- *not yet supported* Emotional inference task using short stories
-- *not yet supported* Emotion matching task using face, body, and shape images
-
-You can call each task from main.py - a GUI will open for you to select the desired task and run.
+The carousel was developed and tested on `PsychoPy 2024.2.5`, and compatibility with other psychopy versions is NOT garanteed. You can download it [here](https://github.com/psychopy/psychopy/releases/tag/2024.2.5 ). From our limited testing with older `PsychoPy` versions, known issues include trouble with a/v sync which will affect the `movie` module.
 
 ## Setup 🖥️
 
-Note: If you're running the task on the stimulus computer at the 7T scanner of the MPICBS, you can skip the setup.
+Note: If you're running the task on the stimulus computer at the 7T scanner of the MPI CBS, you can skip the setup.
 
 - Clone (`git clone`) or download (as `.zip`) the repo to your local machine
 - The stimuli can be downloaded here: link. It's important that you keep the same directory structure as contained in the `.zip` file.
@@ -32,14 +20,50 @@ Note: If you're running the task on the stimulus computer at the 7T scanner of t
       "repo_dir": "/Path/to/social_carousel"
     }
     ```
-
+    
 ## Running the carousel 🌈
 
-- Open PsychoPy _**v2024.2.5**_ (NOTE THE VERSION NUMBER)
-- In the `PsychoPy Runner`, click the blue **+** sign (add experiment) and navigate directories to add `main.py` to the list (select it and click open).
-- Click the green play button (run the script in python) to launch the GUI. Fill out the options:
-  - Subject ID: The ID code for the current participant, for example: `sub-001`
-  - Session: Enter `01` for first visit, `02` for second visit.
-  - Language: To run the tasks in english, select `en`. To run the tasks in german, select `de`.
-  - Mode: To run the full task, select `full`. For testing, debugging, showing examples to the participant, select `demo`.
-  - Select task: Select the task you want to run (see section `The tasks`). Depending on your choice, another GUI might open.
+- Open PsychoPy _**v2024.2.5**_ (NOTE THE VERSION NUMBER - an older 2022 version is also installed, and should not be used to run the carousel)
+- In the `PsychoPy Runner`, click the blue **+** sign (add experiment)
+- Navigate directories to add `main.py` to the experiment list; select it and click open.
+- Click the green play button (run the script in python) to launch the GUI.
+- Fill out the GUI options:
+  - <ins>Subject ID</ins>: The ID code for the current participant, for example: `sub-001`
+  - <ins>Session</ins>: Enter `01` for first visit, `02` for second visit.
+  - <ins>Language</ins>: To run the tasks in english, select `en`. To run the tasks in german, select `de`.
+  - <ins>Mode</ins>: To run the full task, select `full`. For testing, debugging, showing examples to the participant, select `demo`. The use of the `demo` option will limit resting-state runs to 5 seconds, and task runs to one trial.
+  - <ins>Select task</ins>: Select the task you want to run. Depending on your choice, another GUI might open (see next section).
+
+## The tasks 📋
+
+The carousel includes 6 modules. The name of the module is provided as it is named in the carousel GUI:
+- `cross`: Fixation cross for unconstrained cognition (resting-state)
+- `movie`: Movies for naturalistic viewing (resting-state)
+- `beliefs`: False beliefs task using short stories ([Dodell-Feder et al., 2011](https://www.sciencedirect.com/science/article/pii/S1053811910016241))
+- `social`: *not yet supported* Social cognition task using geometric shape movies (as implemented in HCP: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
+- `emoinf`: *not yet supported* Emotional inference task using short stories ([Bruneau et al., 2012](https://www.sciencedirect.com/science/article/pii/S0028393211005082))
+- `emomatch`: *not yet supported* Emotion matching task using face, body, and shape images (as implemented in HCP: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
+
+### Task-specific notes
+
+The subsections below provide more details on the task-specific GUI choices.
+
+#### `movie`
+Two movie choices are currently implemented. All participants should complete both movie conditions:
+- `cloudy`: Plays Pixar's Partly Cloudy animated film. Note that language choice here is irrelevant as the movie contains no language.  
+- `lotr`: Plays Lord of the Rings - The Fellowship of the Ring scene (the council of Elrond). 
+
+#### Localizers: `beliefs`, `social`, `emoinf`, `emomatch`
+Each task leads to a GUI asking the user to select the task run. All participants should complete both runs:
+- `1`: Select for run 1.  
+- `2`: Select for run 2.
+
+## Sequence parameters 🧲
+
+🤔 to do 🤔
+
+# Contributors 💞
+
+Jessica Royer, MPI CBS
+Lorenz Ahle, MPI CBS
+Sofie Valk, MPI CBS
