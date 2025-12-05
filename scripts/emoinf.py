@@ -124,7 +124,7 @@ def run_task(subject, session, language, demo, run_number):
     # display instructions
     instructionsFile = 'emoinf_{lang}_instructions.txt'.format(lang=language)
     instructions_path = os.path.join(configDirs['io_root_dir'], 'instructions', instructionsFile)
-    Txt.setText(open(instructions_path, 'r').read())
+    Txt.setText(open(instructions_path, 'r', encoding='utf-8').read())
     Txt.draw()
     win.logOnFlip(level=logging.EXP, msg='DISPLAY instructions')
     win.flip()
@@ -249,7 +249,7 @@ def run_task(subject, session, language, demo, run_number):
     # # display end of task screen
     # endFile = '{lang}_end.txt'.format(lang=language)
     # end_path = os.path.join(configDirs['io_root_dir'], "instructions", endFile)
-    # with open(end_path, 'r') as f:
+    # with open(end_path, 'r', encoding='utf-8') as f:
     #     Txt.setText(f.read())
     # Txt.draw()
     # win.logOnFlip(level=logging.EXP, msg='DISPLAY end')
