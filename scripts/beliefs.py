@@ -29,11 +29,15 @@ def pick_design_for_run(run: int, subj_id: str):
     else:
         return (D1 if flip else D2), ("D1" if flip else "D2"), flip
 
-def item_orders_for_subject(subj_id: str):
+def item_orders_for_subject(subj_id: str, session: str):
     """Deterministic item order per condition (1..10) for this subject."""
     rng = np.random.default_rng(subject_seed(subj_id))
-    order_b = rng.permutation(np.arange(1, 11))
-    order_p = rng.permutation(np.arange(1, 11))
+    if session == "01":
+        order_b = rng.permutation(np.arange(1, 11))
+        order_p = rng.permutation(np.arange(1, 11))
+    else:
+        order_b = rng.permutation(np.arange(11, 21))
+        order_p = rng.permutation(np.arange(11, 21))
     return order_b, order_p
 
 
@@ -75,7 +79,7 @@ def run_task(subject, session, language, demo, run_number):
     trialsPerRun = len(design)
 
     # set item order
-    order_b_all, order_p_all = item_orders_for_subject(subject)
+    order_b_all, order_p_all = item_orders_for_subject(subject, session)
     if run_number == '1':
         items_b_run = order_b_all[:5].tolist()
         items_p_run = order_p_all[:5].tolist()

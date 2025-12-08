@@ -29,8 +29,9 @@ Note: If you're running the task on the stimulus computer at the 7T scanner of t
 - Navigate directories to add `main.py` to the experiment list; select it and click open.
 - Click the green play button (run the script in python) to launch the GUI.
 - Fill out the GUI options:
-  - <ins>Subject ID</ins>: The ID code for the current participant, for example: `sub-001`
-  - <ins>Session</ins>: Enter `01` for first visit, `02` for second visit.
+  - <ins>Subject ID</ins>: The ID code for the current participant, for example: `001` (do not enter any prefix, only the number).
+    - Note on Subject ID: make sure you enter the participant ID the SAME WAY across runs and sessions for the same subject! 
+  - <ins>Session</ins>: Select `01` for first visit, `02` for second visit.
   - <ins>Language</ins>: To run the tasks in english, select `en`. To run the tasks in german, select `de`.
   - <ins>Mode</ins>: To run the full task, select `full`. For testing, debugging, showing examples to the participant, select `demo`. The use of the `demo` option will limit resting-state runs to 5 seconds, and task runs to one trial.
   - <ins>Select task</ins>: Select the task you want to run. Depending on your choice, another GUI might open (see next section).

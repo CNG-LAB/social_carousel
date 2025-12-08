@@ -52,7 +52,7 @@ def main():
     # -----------------------------
     dlg = gui.Dlg(title="Social Carousel")
     dlg.addField("Subject ID:")
-    dlg.addField("Session:")
+    dlg.addField("Session:", choices=["01", "02"])
     dlg.addField("Language:", choices=["de", "en"])
     dlg.addField("Mode:", choices=["full", "demo"])
     dlg.addField("Select Task:", choices=list_of_tasks)
