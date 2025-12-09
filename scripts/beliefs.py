@@ -28,12 +28,6 @@ def get_pair_seed(subject_id: str) -> int:
     h = hashlib.md5(str(pair_index).encode("utf-8")).hexdigest()
     return int(h[:8], 16), id_in_pair
 
-def subject_seed(subj_id: str) -> int:
-    """Deterministic seed based on subjID (stable across runs/machines)."""
-    # Seed to decide run design order
-    h = hashlib.md5(subj_id.encode("utf-8")).hexdigest()
-    return int(h[:8], 16)
-
 def pick_design_for_run(run: int, subj_id: str):
     """Half of subjects get D1 in run1, half D2 in run1 (deterministic)."""
     # Determined on subject pair so a given pair starts with the same design
@@ -41,7 +35,6 @@ def pick_design_for_run(run: int, subj_id: str):
     D2 = [2, 1, 2, 1, 1, 2, 2, 1, 2, 1]
     seedFlip, id_in_pair = get_pair_seed(subj_id)
     flip = (seedFlip % 2) == 1
-    #flip = (subject_seed(subj_id) % 2) == 1
     if run == 1:
         return (D2 if flip else D1), ("D2" if flip else "D1"), flip
     else:
@@ -199,7 +192,7 @@ def run_task(subject, session, language, demo, run_number):
             win.logOnFlip(level=logging.EXP, msg='OFF first fixation')
             win.flip()
             story_onsets[trial_idx] = clock_global.getTime() - experimentStart
-            Txt.setText(open(story_path, 'r').read())
+            Txt.setText(open(story_path, 'r', encoding='utf-8').read())
             Txt.draw()
             this_message = 'DISPLAY story: {numStory}_{cond}'.format(numStory=items[trial_idx], cond=design[trial_idx])
             win.logOnFlip(level=logging.EXP, msg=this_message)
@@ -212,7 +205,7 @@ def run_task(subject, session, language, demo, run_number):
             win.logOnFlip(level=logging.EXP, msg='OFF story')
             win.flip()
             question_onsets[trial_idx] = clock_global.getTime() - experimentStart
-            Txt.setText(open(quest_path, 'r').read())
+            Txt.setText(open(quest_path, 'r', encoding='utf-8').read())
             Txt.draw()
             this_message = 'DISPLAY question: {numStory}_{cond}'.format(numStory=items[trial_idx], cond=design[trial_idx])
             win.logOnFlip(level=logging.EXP, msg=this_message)

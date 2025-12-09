@@ -12,7 +12,6 @@ from utilities import define_keys, Trigger, getConfig, getDimensions
 from psychopy import core, logging, visual, event
 from utilities import define_keys, Trigger, getConfig, getDimensions, save_csv
 
-
 # counterbalance helpers
 def get_pair_seed(subject_id: str) -> int:
     """Deterministic seed based on subjID (stable across runs/machines)."""
@@ -29,18 +28,13 @@ def get_pair_seed(subject_id: str) -> int:
     h = hashlib.md5(str(pair_index).encode("utf-8")).hexdigest()
     return int(h[:8], 16), id_in_pair
 
-def subject_seed(subj_id: str) -> int:
-    """Deterministic seed based on subjID (stable across runs/machines)."""
-    # Seed to decide run design order
-    h = hashlib.md5(subj_id.encode("utf-8")).hexdigest()
-    return int(h[:8], 16)
-
 def pick_design_for_run(run: int, subj_id: str):
     """Half of subjects get D1 in run1, half D2 in run1 (deterministic)."""
-    # Determined on a subject by subject basis
+    # Determined on subject pair so a given pair starts with the same design
     D1 = [1, 2, 2, 1, 2, 1, 2, 1, 1, 2]
     D2 = [2, 1, 2, 1, 1, 2, 2, 1, 2, 1]
-    flip = (subject_seed(subj_id) % 2) == 1
+    seedFlip, id_in_pair = get_pair_seed(subj_id)
+    flip = (seedFlip % 2) == 1
     if run == 1:
         return (D2 if flip else D1), ("D2" if flip else "D1"), flip
     else:
@@ -102,12 +96,12 @@ def run_task(subject, session, language, demo, run_number):
     log_filename = os.path.join(rootLog, logName)
     logFile = logging.LogFile(log_filename, level=logging.EXP)
 
-    # # set design for this run
-    # design, design_label, flip_flag = pick_design_for_run(int(run_number), subject)
-    # trialsPerRun = len(design)
+    # set design for this run
+    design, design_label, flip_flag = pick_design_for_run(int(run_number), subject)
+    trialsPerRun = len(design)
 
     # # set item order
-    # order_b_all, order_p_all = item_orders_for_subject(subject)
+    # order_b_all, order_p_all = item_orders_for_subject(subject, session)
     # if run_number == '1':
     #     items_b_run = order_b_all[:5].tolist()
     #     items_p_run = order_p_all[:5].tolist()
@@ -198,9 +192,10 @@ def run_task(subject, session, language, demo, run_number):
     #         win.logOnFlip(level=logging.EXP, msg='OFF first fixation')
     #         win.flip()
     #         story_onsets[trial_idx] = clock_global.getTime() - experimentStart
-    #         Txt.setText(open(story_path, 'r').read())
+    #         Txt.setText(open(story_path, 'r', encoding='utf-8').read())
     #         Txt.draw()
-    #         win.logOnFlip(level=logging.EXP, msg='DISPLAY story')
+    #         this_message = 'DISPLAY story: {numStory}_{cond}'.format(numStory=items[trial_idx], cond=design[trial_idx])
+    #         win.logOnFlip(level=logging.EXP, msg=this_message)
     #         win.flip()
     #         story_start_abs = clock_global.getTime()
     #         while (clock_global.getTime() - story_start_abs) < storyDur:
@@ -210,9 +205,10 @@ def run_task(subject, session, language, demo, run_number):
     #         win.logOnFlip(level=logging.EXP, msg='OFF story')
     #         win.flip()
     #         question_onsets[trial_idx] = clock_global.getTime() - experimentStart
-    #         Txt.setText(open(quest_path, 'r').read())
+    #         Txt.setText(open(quest_path, 'r', encoding='utf-8').read())
     #         Txt.draw()
-    #         win.logOnFlip(level=logging.EXP, msg='DISPLAY question')
+    #         this_message = 'DISPLAY question: {numStory}_{cond}'.format(numStory=items[trial_idx], cond=design[trial_idx])
+    #         win.logOnFlip(level=logging.EXP, msg=this_message)
     #         win.flip()
 
     #         # Response window
@@ -258,8 +254,8 @@ def run_task(subject, session, language, demo, run_number):
     #     meta = {
     #         "design_used_this_run": design_label,
     #         "subject_flip_flag": str(int(flip_flag)),
-    #         "item_order_belief_all": ",".join(map(str, item_orders_for_subject(subject)[0])),
-    #         "item_order_photo_all": ",".join(map(str, item_orders_for_subject(subject)[1])),
+    #         "item_order_belief_all": ",".join(map(str, item_orders_for_subject(subject, session)[0])),
+    #         "item_order_photo_all": ",".join(map(str, item_orders_for_subject(subject, session)[1])),
     #         "items_b_used_this_run": ",".join(map(str, items_b_run)),
     #         "items_p_used_this_run": ",".join(map(str, items_p_run)),
     #     }
