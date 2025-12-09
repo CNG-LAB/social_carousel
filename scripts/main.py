@@ -51,7 +51,7 @@ def main():
     # GUI SETUP
     # -----------------------------
     dlg = gui.Dlg(title="Social Carousel")
-    dlg.addField("Subject ID:")
+    dlg.addField("Subject ID (format example: 001, 002, ... 050):")
     dlg.addField("Session:", choices=["01", "02"])
     dlg.addField("Language:", choices=["de", "en"])
     dlg.addField("Mode:", choices=["full", "demo"])

@@ -12,33 +12,62 @@ from utilities import define_keys, Trigger, getConfig, getDimensions
 from psychopy import core, logging, visual, event
 from utilities import define_keys, Trigger, getConfig, getDimensions, save_csv
 
-
 # counterbalance helpers
+def get_pair_seed(subject_id: str) -> int:
+    """Deterministic seed based on subjID (stable across runs/machines)."""
+    # Convert subject ID (e.g., ‘001’) into a pair index:
+    # 001–002 -> seed 1
+    # 003–004 -> seed 2
+    # 005–006 -> seed 3
+    # ...
+    # 049–050 -> seed 25
+    # Seed to decide stimulus order
+    sid = int(subject_id)
+    id_in_pair = sid % 2
+    pair_index = (sid - 1) // 2 + 1   # groups of 2
+    h = hashlib.md5(str(pair_index).encode("utf-8")).hexdigest()
+    return int(h[:8], 16), id_in_pair
+
 def subject_seed(subj_id: str) -> int:
     """Deterministic seed based on subjID (stable across runs/machines)."""
+    # Seed to decide run design order
     h = hashlib.md5(subj_id.encode("utf-8")).hexdigest()
     return int(h[:8], 16)
 
 def pick_design_for_run(run: int, subj_id: str):
     """Half of subjects get D1 in run1, half D2 in run1 (deterministic)."""
+    # Determined on subject pair so a given pair starts with the same design
     D1 = [1, 2, 2, 1, 2, 1, 2, 1, 1, 2]
     D2 = [2, 1, 2, 1, 1, 2, 2, 1, 2, 1]
-    flip = (subject_seed(subj_id) % 2) == 1
+    seedFlip, id_in_pair = get_pair_seed(subj_id)
+    flip = (seedFlip % 2) == 1
+    #flip = (subject_seed(subj_id) % 2) == 1
     if run == 1:
         return (D2 if flip else D1), ("D2" if flip else "D1"), flip
     else:
         return (D1 if flip else D2), ("D1" if flip else "D2"), flip
 
 def item_orders_for_subject(subj_id: str, session: str):
-    """Deterministic item order per condition (1..10) for this subject."""
-    rng = np.random.default_rng(subject_seed(subj_id))
+    seed, id_in_pair = get_pair_seed(subj_id)
+    rng = np.random.default_rng(seed)
+    order_b = rng.permutation(np.arange(1, 21))
+    order_p = rng.permutation(np.arange(1, 21))
+
     if session == "01":
-        order_b = rng.permutation(np.arange(1, 11))
-        order_p = rng.permutation(np.arange(1, 11))
+        if id_in_pair == 0:
+            this_b = order_b[0:10]
+            this_p = order_p[0:10]
+        else:
+            this_b = order_b[10:20]
+            this_p = order_p[10:20]
     else:
-        order_b = rng.permutation(np.arange(11, 21))
-        order_p = rng.permutation(np.arange(11, 21))
-    return order_b, order_p
+        if id_in_pair == 0:
+            this_b = order_b[10:20]
+            this_p = order_p[10:20]
+        else:
+            this_b = order_b[0:10]
+            this_p = order_p[0:10]
+    return this_b, this_p
 
 
 # Main task
@@ -128,7 +157,7 @@ def run_task(subject, session, language, demo, run_number):
     # display instructions
     instructionsFile = 'beliefs_{lang}_instructions.txt'.format(lang=language)
     instructions_path = os.path.join(configDirs['io_root_dir'], 'instructions', instructionsFile)
-    Txt.setText(open(instructions_path, 'r').read(), encoding='utf-8')
+    Txt.setText(open(instructions_path, 'r', encoding='utf-8').read())
     Txt.draw()
     win.logOnFlip(level=logging.EXP, msg='DISPLAY instructions')
     win.flip()
@@ -172,7 +201,8 @@ def run_task(subject, session, language, demo, run_number):
             story_onsets[trial_idx] = clock_global.getTime() - experimentStart
             Txt.setText(open(story_path, 'r').read())
             Txt.draw()
-            win.logOnFlip(level=logging.EXP, msg='DISPLAY story')
+            this_message = 'DISPLAY story: {numStory}_{cond}'.format(numStory=items[trial_idx], cond=design[trial_idx])
+            win.logOnFlip(level=logging.EXP, msg=this_message)
             win.flip()
             story_start_abs = clock_global.getTime()
             while (clock_global.getTime() - story_start_abs) < storyDur:
@@ -184,7 +214,8 @@ def run_task(subject, session, language, demo, run_number):
             question_onsets[trial_idx] = clock_global.getTime() - experimentStart
             Txt.setText(open(quest_path, 'r').read())
             Txt.draw()
-            win.logOnFlip(level=logging.EXP, msg='DISPLAY question')
+            this_message = 'DISPLAY question: {numStory}_{cond}'.format(numStory=items[trial_idx], cond=design[trial_idx])
+            win.logOnFlip(level=logging.EXP, msg=this_message)
             win.flip()
 
             # Response window
@@ -230,8 +261,8 @@ def run_task(subject, session, language, demo, run_number):
         meta = {
             "design_used_this_run": design_label,
             "subject_flip_flag": str(int(flip_flag)),
-            "item_order_belief_all": ",".join(map(str, item_orders_for_subject(subject)[0])),
-            "item_order_photo_all": ",".join(map(str, item_orders_for_subject(subject)[1])),
+            "item_order_belief_all": ",".join(map(str, item_orders_for_subject(subject, session)[0])),
+            "item_order_photo_all": ",".join(map(str, item_orders_for_subject(subject, session)[1])),
             "items_b_used_this_run": ",".join(map(str, items_b_run)),
             "items_p_used_this_run": ",".join(map(str, items_p_run)),
         }

@@ -14,13 +14,30 @@ from utilities import define_keys, Trigger, getConfig, getDimensions, save_csv
 
 
 # counterbalance helpers
+def get_pair_seed(subject_id: str) -> int:
+    """Deterministic seed based on subjID (stable across runs/machines)."""
+    # Convert subject ID (e.g., ‘001’) into a pair index:
+    # 001–002 -> seed 1
+    # 003–004 -> seed 2
+    # 005–006 -> seed 3
+    # ...
+    # 049–050 -> seed 25
+    # Seed to decide stimulus order
+    sid = int(subject_id)
+    id_in_pair = sid % 2
+    pair_index = (sid - 1) // 2 + 1   # groups of 2
+    h = hashlib.md5(str(pair_index).encode("utf-8")).hexdigest()
+    return int(h[:8], 16), id_in_pair
+
 def subject_seed(subj_id: str) -> int:
     """Deterministic seed based on subjID (stable across runs/machines)."""
+    # Seed to decide run design order
     h = hashlib.md5(subj_id.encode("utf-8")).hexdigest()
     return int(h[:8], 16)
 
 def pick_design_for_run(run: int, subj_id: str):
     """Half of subjects get D1 in run1, half D2 in run1 (deterministic)."""
+    # Determined on a subject by subject basis
     D1 = [1, 2, 2, 1, 2, 1, 2, 1, 1, 2]
     D2 = [2, 1, 2, 1, 1, 2, 2, 1, 2, 1]
     flip = (subject_seed(subj_id) % 2) == 1
@@ -30,15 +47,26 @@ def pick_design_for_run(run: int, subj_id: str):
         return (D1 if flip else D2), ("D1" if flip else "D2"), flip
 
 def item_orders_for_subject(subj_id: str, session: str):
-    """Deterministic item order per condition (1..10) for this subject."""
-    rng = np.random.default_rng(subject_seed(subj_id))
+    seed, id_in_pair = get_pair_seed(subj_id)
+    rng = np.random.default_rng(seed)
+    order_b = rng.permutation(np.arange(1, 21))
+    order_p = rng.permutation(np.arange(1, 21))
+
     if session == "01":
-        order_b = rng.permutation(np.arange(1, 11))
-        order_p = rng.permutation(np.arange(1, 11))
+        if id_in_pair == 0:
+            this_b = order_b[0:10]
+            this_p = order_p[0:10]
+        else:
+            this_b = order_b[10:20]
+            this_p = order_p[10:20]
     else:
-        order_b = rng.permutation(np.arange(11, 21))
-        order_p = rng.permutation(np.arange(11, 21))
-    return order_b, order_p
+        if id_in_pair == 0:
+            this_b = order_b[10:20]
+            this_p = order_p[10:20]
+        else:
+            this_b = order_b[0:10]
+            this_p = order_p[0:10]
+    return this_b, this_p
 
 
 # Main task
