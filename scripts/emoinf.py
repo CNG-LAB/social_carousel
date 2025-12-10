@@ -43,24 +43,24 @@ def pick_design_for_run(run: int, subj_id: str):
 def item_orders_for_subject(subj_id: str, session: str):
     seed, id_in_pair = get_pair_seed(subj_id)
     rng = np.random.default_rng(seed)
-    order_b = rng.permutation(np.arange(1, 21))
-    order_p = rng.permutation(np.arange(1, 21))
+    order_ep = rng.permutation(np.arange(1, 21))
+    order_pp = rng.permutation(np.arange(1, 21))
 
     if session == "01":
         if id_in_pair == 0:
-            this_b = order_b[0:10]
-            this_p = order_p[0:10]
+            this_ep = order_ep[0:10]
+            this_pp = order_pp[0:10]
         else:
-            this_b = order_b[10:20]
-            this_p = order_p[10:20]
+            this_ep = order_ep[10:20]
+            this_pp = order_pp[10:20]
     else:
         if id_in_pair == 0:
-            this_b = order_b[10:20]
-            this_p = order_p[10:20]
+            this_ep = order_ep[10:20]
+            this_pp = order_pp[10:20]
         else:
-            this_b = order_b[0:10]
-            this_p = order_p[0:10]
-    return this_b, this_p
+            this_ep = order_ep[0:10]
+            this_pp = order_pp[0:10]
+    return this_ep, this_pp
 
 
 # Main task
@@ -100,40 +100,40 @@ def run_task(subject, session, language, demo, run_number):
     design, design_label, flip_flag = pick_design_for_run(int(run_number), subject)
     trialsPerRun = len(design)
 
-    # # set item order
-    # order_b_all, order_p_all = item_orders_for_subject(subject, session)
-    # if run_number == '1':
-    #     items_b_run = order_b_all[:5].tolist()
-    #     items_p_run = order_p_all[:5].tolist()
-    # else:
-    #     items_b_run = order_b_all[5:].tolist()
-    #     items_p_run = order_p_all[5:].tolist()
+    # set item order
+    order_ep_all, order_pp_all = item_orders_for_subject(subject, session)
+    if run_number == '1':
+        items_ep_run = order_ep_all[:5].tolist()
+        items_pp_run = order_pp_all[:5].tolist()
+    else:
+        items_ep_run = order_ep_all[5:].tolist()
+        items_pp_run = order_pp_all[5:].tolist()
 
-    # # set prefixes and timing 
-    # condPrefs = ['b', 'p']
+    # set prefixes and timing 
+    condPrefs = ['ep', 'pp']
 
-    # # demo
-    # if demo == 'demo':
-    #     n_loops = range(1)
-    #     fixDur = 2
-    #     storyDur = 4 
-    #     questDur = 2 
-    # else:
-    #     n_loops = range(trialsPerRun)    
-    #     fixDur = 12.0
-    #     storyDur = 10.0
-    #     questDur = 4.0
+    # demo
+    if demo == 'demo':
+        n_loops = range(1)
+        fixDur = 2
+        storyDur = 4 
+        responseDur = 2 
+    else:
+        n_loops = range(trialsPerRun)    
+        fixDur = 12.0
+        storyDur = 12.0
+        responseDur = 4.0
 
-    # # define behavioral arrays
-    # key_vec = [0] * trialsPerRun
-    # RT_vec = [0.0] * trialsPerRun
-    # items = [0] * trialsPerRun
-    # fix_onsets = [0.0] * trialsPerRun
-    # story_onsets = [0.0] * trialsPerRun
-    # question_onsets = [0.0] * trialsPerRun
-    # trialsOnsets = story_onsets  # kept for compatibility
+    # define behavioral arrays
+    key_vec = [0] * trialsPerRun
+    RT_vec = [0.0] * trialsPerRun
+    items = [0] * trialsPerRun
+    fix_onsets = [0.0] * trialsPerRun
+    story_onsets = [0.0] * trialsPerRun
+    response_onsets = [0.0] * trialsPerRun
+    trialsOnsets = response_onsets  # kept for compatibility
 
-    # ips = ((trialsPerRun) * (fixDur + storyDur + questDur) + (fixDur)) / 2.0
+    ips = ((trialsPerRun) * (fixDur + storyDur + responseDur) + (fixDur)) / 2.0
 
     # display window & get size properties
     win = visual.Window(fullscr=True, color='black', units='height')
@@ -159,131 +159,131 @@ def run_task(subject, session, language, demo, run_number):
     # launch scan
     Trigger(mainClock, Txt, win, triggerKey)
 
-    # # Start experiment
-    # #event.clearEvents()
-    # used_b = used_p = 0
-    # clock_global = core.Clock()
-    # experimentStart = clock_global.getTime()
+    # Start experiment
+    #event.clearEvents()
+    used_ep = used_pp = 0
+    clock_global = core.Clock()
+    experimentStart = clock_global.getTime()
 
-    # try:
-    #     for trial_idx in n_loops:
-    #         # Fixation
-    #         fixation.draw()
-    #         win.logOnFlip(level=logging.EXP, msg='DISPLAY first fixation')
-    #         win.flip()
-    #         fix_onsets[trial_idx] = clock_global.getTime() - experimentStart
-    #         fix_start = clock_global.getTime()
-    #         while (clock_global.getTime() - fix_start) < fixDur:
-    #             core.wait(0.01)
+    try:
+        for trial_idx in n_loops:
+            # Fixation
+            fixation.draw()
+            win.logOnFlip(level=logging.EXP, msg='DISPLAY first fixation')
+            win.flip()
+            fix_onsets[trial_idx] = clock_global.getTime() - experimentStart
+            fix_start = clock_global.getTime()
+            while (clock_global.getTime() - fix_start) < fixDur:
+                core.wait(0.01)
 
-    #         # Determine condition + item
-    #         trialT = design[trial_idx]
-    #         if trialT == 1:
-    #             numbeT = items_b_run[used_b]; used_b += 1
-    #         else:
-    #             numbeT = items_p_run[used_p]; used_p += 1
-    #         items[trial_idx] = numbeT
+            # Determine condition + item
+            trialT = design[trial_idx]
+            if trialT == 1:
+                numbeT = items_ep_run[used_ep]; used_ep += 1
+            else:
+                numbeT = items_pp_run[used_pp]; used_pp += 1
+            items[trial_idx] = numbeT
 
-    #         pref = condPrefs[trialT - 1]
-    #         story_path = os.path.join(stimDir, f"{numbeT}{pref}_story_{language}.txt")
-    #         quest_path = os.path.join(stimDir, f"{numbeT}{pref}_question_{language}.txt")
+            pref = condPrefs[trialT - 1]
+            story_path = os.path.join(stimDir, f"{numbeT}{pref}_story_{language}.txt")
+            quest_path = os.path.join(stimDir, f"response_screen_{language}.txt")
 
-    #         # Story
-    #         win.logOnFlip(level=logging.EXP, msg='OFF first fixation')
-    #         win.flip()
-    #         story_onsets[trial_idx] = clock_global.getTime() - experimentStart
-    #         Txt.setText(open(story_path, 'r', encoding='utf-8').read())
-    #         Txt.draw()
-    #         this_message = 'DISPLAY story: {numStory}_{cond}'.format(numStory=items[trial_idx], cond=design[trial_idx])
-    #         win.logOnFlip(level=logging.EXP, msg=this_message)
-    #         win.flip()
-    #         story_start_abs = clock_global.getTime()
-    #         while (clock_global.getTime() - story_start_abs) < storyDur:
-    #             core.wait(0.005)
+            # Story
+            win.logOnFlip(level=logging.EXP, msg='OFF first fixation')
+            win.flip()
+            story_onsets[trial_idx] = clock_global.getTime() - experimentStart
+            Txt.setText(open(story_path, 'r', encoding='utf-8').read())
+            Txt.draw()
+            this_message = 'DISPLAY story: {numStory}_{cond}'.format(numStory=items[trial_idx], cond=design[trial_idx])
+            win.logOnFlip(level=logging.EXP, msg=this_message)
+            win.flip()
+            story_start_abs = clock_global.getTime()
+            while (clock_global.getTime() - story_start_abs) < storyDur:
+                core.wait(0.005)
 
-    #         # Question
-    #         win.logOnFlip(level=logging.EXP, msg='OFF story')
-    #         win.flip()
-    #         question_onsets[trial_idx] = clock_global.getTime() - experimentStart
-    #         Txt.setText(open(quest_path, 'r', encoding='utf-8').read())
-    #         Txt.draw()
-    #         this_message = 'DISPLAY question: {numStory}_{cond}'.format(numStory=items[trial_idx], cond=design[trial_idx])
-    #         win.logOnFlip(level=logging.EXP, msg=this_message)
-    #         win.flip()
+            # Response
+            win.logOnFlip(level=logging.EXP, msg='OFF story')
+            win.flip()
+            response_onsets[trial_idx] = clock_global.getTime() - experimentStart
+            Txt.setText(open(quest_path, 'r', encoding='utf-8').read())
+            Txt.draw()
+            this_message = 'DISPLAY question'
+            win.logOnFlip(level=logging.EXP, msg=this_message)
+            win.flip()
 
-    #         # Response window
-    #         response_start = clock_global.getTime()
-    #         got_first = False
-    #         key_vec[trial_idx] = 0
-    #         RT_vec[trial_idx] = 0.0
-    #         keyList = list(responseKey) + list(breakKey)
+            # Response window
+            response_start = clock_global.getTime()
+            got_first = False
+            key_vec[trial_idx] = 0
+            RT_vec[trial_idx] = 0.0
+            keyList = list(responseKey) + list(breakKey)
 
-    #         while (clock_global.getTime() - response_start) < questDur:
-    #             keys = event.getKeys(keyList=keyList, timeStamped=False)
-    #             if keys:
-    #                 if breakKey in keys:
-    #                     raise KeyboardInterrupt
-    #                 if not got_first:
-    #                     if responseKey[0] in keys:
-    #                         key_vec[trial_idx] = 1
-    #                         RT_vec[trial_idx] = clock_global.getTime() - response_start
-    #                         got_first = True
-    #                     elif responseKey[1] in keys:
-    #                         key_vec[trial_idx] = 2
-    #                         RT_vec[trial_idx] = clock_global.getTime() - response_start
-    #                         got_first = True
-    #             core.wait(0.005)
+            while (clock_global.getTime() - response_start) < responseDur:
+                keys = event.getKeys(keyList=keyList, timeStamped=False)
+                if keys:
+                    if breakKey in keys:
+                        raise KeyboardInterrupt
+                    if not got_first:
+                        if responseKey[0] in keys:
+                            key_vec[trial_idx] = 1
+                            RT_vec[trial_idx] = clock_global.getTime() - response_start
+                            got_first = True
+                        elif responseKey[1] in keys:
+                            key_vec[trial_idx] = 2
+                            RT_vec[trial_idx] = clock_global.getTime() - response_start
+                            got_first = True
+                core.wait(0.005)
 
-    #         # Backup CSV
-    #         tmp_csvName = 'sub-{subj}_ses-{sess}_{task}_{dt}_backup.csv'.format(subj=subject, sess=session, task=task, dt=datetimestr)
-    #         tmp_csv_filename = os.path.join(rootLog, tmp_csvName)
-    #         save_csv(pathlib.Path(tmp_csv_filename), design, items, key_vec, RT_vec,
-    #                  fix_onsets, story_onsets, question_onsets)
+            # Backup CSV
+            tmp_csvName = 'sub-{subj}_ses-{sess}_{task}_{dt}_backup.csv'.format(subj=subject, sess=session, task=task, dt=datetimestr)
+            tmp_csv_filename = os.path.join(rootLog, tmp_csvName)
+            save_csv(pathlib.Path(tmp_csv_filename), design, items, key_vec, RT_vec,
+                     fix_onsets, story_onsets, response_onsets)
 
-    #     # Final fixation
-    #     fixation.draw(); 
-    #     win.logOnFlip(level=logging.EXP, msg='DISPLAY final fixation')
-    #     win.flip()
-    #     fix_end_start = clock_global.getTime()
-    #     while (clock_global.getTime() - fix_end_start) < fixDur:
-    #         core.wait(0.01)
+        # Final fixation
+        fixation.draw(); 
+        win.logOnFlip(level=logging.EXP, msg='DISPLAY final fixation')
+        win.flip()
+        fix_end_start = clock_global.getTime()
+        while (clock_global.getTime() - fix_end_start) < fixDur:
+            core.wait(0.01)
 
-    #     # Final save
-    #     experimentEnd = clock_global.getTime()
-    #     experimentDuration = experimentEnd - experimentStart
-    #     meta = {
-    #         "design_used_this_run": design_label,
-    #         "subject_flip_flag": str(int(flip_flag)),
-    #         "item_order_belief_all": ",".join(map(str, item_orders_for_subject(subject, session)[0])),
-    #         "item_order_photo_all": ",".join(map(str, item_orders_for_subject(subject, session)[1])),
-    #         "items_b_used_this_run": ",".join(map(str, items_b_run)),
-    #         "items_p_used_this_run": ",".join(map(str, items_p_run)),
-    #     }
-    #     final_csv = 'sub-{subj}_ses-{sess}_{task}_{dt}.csv'.format(subj=subject, sess=session, task=task, dt=datetimestr)
-    #     final_csv_filename = os.path.join(rootLog, final_csv)
-    #     save_csv(pathlib.Path(final_csv_filename), design, items, key_vec, RT_vec,
-    #              fix_onsets, story_onsets, question_onsets,
-    #              experiment_duration=experimentDuration, ips=ips, meta=meta)
-    #     print(f"Final data saved to {final_csv}")
+        # Final save
+        experimentEnd = clock_global.getTime()
+        experimentDuration = experimentEnd - experimentStart
+        meta = {
+            "design_used_this_run": design_label,
+            "subject_flip_flag": str(int(flip_flag)),
+            "item_order_emoPain_all": ",".join(map(str, item_orders_for_subject(subject, session)[0])),
+            "item_order_physPain_all": ",".join(map(str, item_orders_for_subject(subject, session)[1])),
+            "items_emo_used_this_run": ",".join(map(str, items_ep_run)),
+            "items_phys_used_this_run": ",".join(map(str, items_pp_run)),
+        }
+        final_csv = 'sub-{subj}_ses-{sess}_{task}_{dt}.csv'.format(subj=subject, sess=session, task=task, dt=datetimestr)
+        final_csv_filename = os.path.join(rootLog, final_csv)
+        save_csv(pathlib.Path(final_csv_filename), design, items, key_vec, RT_vec,
+                 fix_onsets, story_onsets, response_onsets,
+                 experiment_duration=experimentDuration, ips=ips, meta=meta)
+        print(f"Final data saved to {final_csv}")
 
-    # except KeyboardInterrupt:
-    #     abort_csv = 'sub-{subj}_ses-{sess}_{task}_{dt}_ABORT.csv'.format(subj=subject, sess=session, task=task, dt=datetimestr)
-    #     abort_csv_filename = os.path.join(rootLog, abort_csv)
-    #     save_csv(pathlib.Path(abort_csv_filename), design, items, key_vec, RT_vec,
-    #              fix_onsets, story_onsets, question_onsets)
-    #     print(f"Experiment aborted, partial data saved to {abort_csv}")
-    #     event.clearEvents(); win.close(); core.quit()
+    except KeyboardInterrupt:
+        abort_csv = 'sub-{subj}_ses-{sess}_{task}_{dt}_ABORT.csv'.format(subj=subject, sess=session, task=task, dt=datetimestr)
+        abort_csv_filename = os.path.join(rootLog, abort_csv)
+        save_csv(pathlib.Path(abort_csv_filename), design, items, key_vec, RT_vec,
+                 fix_onsets, story_onsets, response_onsets)
+        print(f"Experiment aborted, partial data saved to {abort_csv}")
+        event.clearEvents(); win.close(); core.quit()
 
-    # # display end of task screen
-    # endFile = '{lang}_end.txt'.format(lang=language)
-    # end_path = os.path.join(configDirs['io_root_dir'], "instructions", endFile)
-    # with open(end_path, 'r', encoding='utf-8') as f:
-    #     Txt.setText(f.read())
-    # Txt.draw()
-    # win.logOnFlip(level=logging.EXP, msg='DISPLAY end')
-    # win.flip()
-    # event.waitKeys(keyList=breakKey)
-    # core.wait(0.1)
+    # display end of task screen
+    endFile = '{lang}_end.txt'.format(lang=language)
+    end_path = os.path.join(configDirs['io_root_dir'], "instructions", endFile)
+    with open(end_path, 'r', encoding='utf-8') as f:
+        Txt.setText(f.read())
+    Txt.draw()
+    win.logOnFlip(level=logging.EXP, msg='DISPLAY end')
+    win.flip()
+    event.waitKeys(keyList=breakKey)
+    core.wait(0.1)
     
     # clean up
     event.clearEvents()
