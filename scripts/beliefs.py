@@ -238,7 +238,7 @@ def run_task(subject, session, language, demo, run_number):
             tmp_csvName = 'sub-{subj}_ses-{sess}_{task}_{dt}_backup.csv'.format(subj=subject, sess=session, task=task, dt=datetimestr)
             tmp_csv_filename = os.path.join(rootLog, tmp_csvName)
             save_csv(pathlib.Path(tmp_csv_filename), design, items, key_vec, RT_vec,
-                     fix_onsets, story_onsets, question_onsets)
+                     fix_onsets, story_onsets, storyDur, question_onsets)
 
         # Final fixation
         fixation.draw(); 
@@ -262,7 +262,7 @@ def run_task(subject, session, language, demo, run_number):
         final_csv = 'sub-{subj}_ses-{sess}_{task}_{dt}.csv'.format(subj=subject, sess=session, task=task, dt=datetimestr)
         final_csv_filename = os.path.join(rootLog, final_csv)
         save_csv(pathlib.Path(final_csv_filename), design, items, key_vec, RT_vec,
-                 fix_onsets, story_onsets, question_onsets,
+                 fix_onsets, story_onsets, storyDur, question_onsets,
                  experiment_duration=experimentDuration, ips=ips, meta=meta)
         print(f"Final data saved to {final_csv}")
 
@@ -270,7 +270,7 @@ def run_task(subject, session, language, demo, run_number):
         abort_csv = 'sub-{subj}_ses-{sess}_{task}_{dt}_ABORT.csv'.format(subj=subject, sess=session, task=task, dt=datetimestr)
         abort_csv_filename = os.path.join(rootLog, abort_csv)
         save_csv(pathlib.Path(abort_csv_filename), design, items, key_vec, RT_vec,
-                 fix_onsets, story_onsets, question_onsets)
+                 fix_onsets, story_onsets, storyDur, question_onsets)
         print(f"Experiment aborted, partial data saved to {abort_csv}")
         event.clearEvents(); win.close(); core.quit()
 

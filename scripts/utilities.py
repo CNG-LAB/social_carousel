@@ -39,10 +39,16 @@ def getConfig(filename):
         config = json.load(f)
     return(config)
 
+def is_valid_subject_id(subj_id):
+    if len(subj_id) != 3:
+        return False
+    if not subj_id.isdigit():
+        return False
+    return True
 
 # ---------- CSV writer ----------
 def save_csv(path: Path, design, items, key_vec, RT_vec,
-             fix_onsets, story_onsets, question_onsets,
+             fix_onsets, story_onsets, stimulus_duration, question_onsets,
              *, experiment_duration=None, ips=None, meta=None):
     """Write the current dataset + optional metadata rows to a CSV file."""
     trials_per_run = len(design)
@@ -56,6 +62,7 @@ def save_csv(path: Path, design, items, key_vec, RT_vec,
             "RT(s)",
             "fix_onset_s",
             "story_onset_s",
+            "stimulus_duration_s",
             "question_onset_s"
         ])
         for t in range(trials_per_run):
@@ -64,6 +71,7 @@ def save_csv(path: Path, design, items, key_vec, RT_vec,
                 key_vec[t], f"{RT_vec[t]:.4f}",
                 f"{fix_onsets[t]:.3f}",
                 f"{story_onsets[t]:.3f}",
+                f"{stimulus_duration[t]:.3f}",
                 f"{question_onsets[t]:.3f}"
             ])
         # metadata block (empty line + key/value rows)

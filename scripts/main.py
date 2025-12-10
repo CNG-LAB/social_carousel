@@ -1,7 +1,7 @@
 # main.py
 from psychopy import gui, core
 import importlib
-from utilities import getConfig
+from utilities import getConfig, is_valid_subject_id
 import pathlib
 import os
 
@@ -50,47 +50,95 @@ def main():
     # -----------------------------
     # GUI SETUP
     # -----------------------------
-    dlg = gui.Dlg(title="Social Carousel")
-    dlg.addField("Subject ID (format example: 001, 002, ... 050):")
-    dlg.addField("Session:", choices=["01", "02"])
-    dlg.addField("Language:", choices=["de", "en"])
-    dlg.addField("Mode:", choices=["full", "demo"])
-    dlg.addField("Select Task:", choices=list_of_tasks)
 
-    user_input = dlg.show()
+    info = {
+        "Subject ID (format example: 001, 002, ... 050):": "",
+        "Session:": ["01", "02"],
+        "Language:": ["de", "en"],
+        "Mode:": ["full", "demo"],
+        "Select Task:": list_of_tasks
+    }
+
+    dlg = gui.DlgFromDict(dictionary=info, 
+        title="Social Carousel", 
+        tip=None, 
+        sortKeys=False
+    )
 
     if dlg.OK == False:
         core.quit()
 
-    subject_id = user_input[0]
-    session = user_input[1]
-    language = user_input[2]
-    demo = user_input[3]
-    task_choice = user_input[4]
+    subject_id = info["Subject ID (format example: 001, 002, ... 050):"]
+    session = info["Session:"]
+    language = info["Language:"]
+    demo = info["Mode:"]
+    task_choice = info["Select Task:"]
+
+    # -----------------------------
+    # Check inputs
+    # -----------------------------
+
+    # is subject ID a three digit entry
+    if not is_valid_subject_id(subject_id):
+        print("Invalid subject ID! It must be a zero-padded 3-digit number (e.g., 001).")
+        core.quit()
+
+    # Ask user to confirm session type
+    this_pair = (int(subject_id) - 1) // 2 + 1 
+    startWithWholeBrain = (this_pair % 2) == 1
+    if startWithWholeBrain is True and session == "01":
+        this_message = "Session 01 is WHOLE BRAIN"
+    elif startWithWholeBrain is True and session == "02": 
+        this_message = "Session 02 is LAYER"
+    elif startWithWholeBrain is False and session == "01": 
+        this_message = "Session 01 is LAYER"
+    elif startWithWholeBrain is False and session == "02": 
+       this_message = "Session 02 is WHOLE BRAIN"
+    else:
+        print("Invalid subject/session combination.")
+        core.quit()
+
+    dlg_order = gui.Dlg(title="For this subject...")
+    dlg_order.addText(this_message + "\nPress OK to continue.")
+    dlg_order.show()
+
+    if not dlg_order.OK:
+        core.quit()
 
     # -----------------------------
     # Special extra GUI for specific tasks
     # -----------------------------
     run_number = None
+    
     if task_choice == "beliefs" or task_choice == "social" or task_choice == "emoinf" or task_choice == "emomatch":
-        dlg2 = gui.Dlg(title="localizer options")
-        dlg2.addField("Select run:", choices=["1", "2"])
-        run_input = dlg2.show()
+        infoRun = {
+            "Select run:": ["1", "2"],
+        }
 
+        dlg2 = gui.DlgFromDict(dictionary=infoRun, 
+            title="Social Carousel", 
+            tip=None, 
+            sortKeys=False
+        )
         if dlg2.OK == False:
             core.quit()
 
-        run_number = run_input[0]
+        run_number = infoRun["Select run:"]
 
     elif task_choice == "movie":
-        dlg2 = gui.Dlg(title="movie options")
-        dlg2.addField("Select movie:", choices=["cloudy", "lotr"])
-        movie_input = dlg2.show()
+        infoRun = {
+            "Select movie:": ["1", "2"],
+        }
 
+        dlg2 = gui.DlgFromDict(dictionary=infoRun, 
+            title="Social Carousel", 
+            tip=None, 
+            sortKeys=False
+        )
         if dlg2.OK == False:
             core.quit()
 
-        movie_id = movie_input[0]
+        movie_id = infoRun["Select movie:"]
 
     # -----------------------------
     # Map GUI selection: module name
