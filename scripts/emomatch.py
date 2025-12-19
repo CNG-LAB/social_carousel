@@ -12,29 +12,55 @@ from utilities import define_keys, Trigger, getConfig, getDimensions
 from psychopy import core, logging, visual, event
 from utilities import define_keys, Trigger, getConfig, getDimensions, save_csv
 
-
 # counterbalance helpers
-def subject_seed(subj_id: str) -> int:
+def get_pair_seed(subject_id: str) -> int:
     """Deterministic seed based on subjID (stable across runs/machines)."""
-    h = hashlib.md5(subj_id.encode("utf-8")).hexdigest()
-    return int(h[:8], 16)
+    # Convert subject ID (e.g., ‘001’) into a pair index:
+    # 001–002 -> seed 1
+    # 003–004 -> seed 2
+    # 005–006 -> seed 3
+    # ...
+    # 049–050 -> seed 25
+    # Seed to decide stimulus order
+    sid = int(subject_id)
+    id_in_pair = sid % 2
+    pair_index = (sid - 1) // 2 + 1   # groups of 2
+    h = hashlib.md5(str(pair_index).encode("utf-8")).hexdigest()
+    return int(h[:8], 16), id_in_pair
 
 def pick_design_for_run(run: int, subj_id: str):
     """Half of subjects get D1 in run1, half D2 in run1 (deterministic)."""
+    # Determined on subject pair so a given pair starts with the same design
     D1 = [1, 2, 2, 1, 2, 1, 2, 1, 1, 2]
     D2 = [2, 1, 2, 1, 1, 2, 2, 1, 2, 1]
-    flip = (subject_seed(subj_id) % 2) == 1
+    seedFlip, id_in_pair = get_pair_seed(subj_id)
+    flip = (seedFlip % 2) == 1
     if run == 1:
         return (D2 if flip else D1), ("D2" if flip else "D1"), flip
     else:
         return (D1 if flip else D2), ("D1" if flip else "D2"), flip
 
-def item_orders_for_subject(subj_id: str):
-    """Deterministic item order per condition (1..10) for this subject."""
-    rng = np.random.default_rng(subject_seed(subj_id))
-    order_b = rng.permutation(np.arange(1, 11))
-    order_p = rng.permutation(np.arange(1, 11))
-    return order_b, order_p
+def item_orders_for_subject(subj_id: str, session: str):
+    seed, id_in_pair = get_pair_seed(subj_id)
+    rng = np.random.default_rng(seed)
+    order_b = rng.permutation(np.arange(1, 21))
+    order_p = rng.permutation(np.arange(1, 21))
+
+    if session == "01":
+        if id_in_pair == 0:
+            this_b = order_b[0:10]
+            this_p = order_p[0:10]
+        else:
+            this_b = order_b[10:20]
+            this_p = order_p[10:20]
+    else:
+        if id_in_pair == 0:
+            this_b = order_b[10:20]
+            this_p = order_p[10:20]
+        else:
+            this_b = order_b[0:10]
+            this_p = order_p[0:10]
+    return this_b, this_p
 
 
 # Main task

@@ -10,6 +10,8 @@ Note: If you're running the task on the stimulus computer at the 7T scanner of t
 
 - Clone (`git clone`) or download (as `.zip`) the repo to your local machine
 - The stimuli can be downloaded [here](https://owncloud.gwdg.de/index.php/s/5onMUgVcrZSakzB) - just ask Jessica for the pw.
+  - If you change anything in the stimuli or instructions, please also update the change log and push to the repo.
+  - Any local changes (e.g. at the scanner) should be uploaded to the owncloud
 - Keep the same directory structure as in the `.zip` file you just downloaded.
 - Update `config.json`.
   - "io_root_dir" contains the root path to the stimuli, logs, instructions.
