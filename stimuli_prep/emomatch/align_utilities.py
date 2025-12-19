@@ -18,13 +18,13 @@ def set_params():
 
 # Set directories
 def set_dirs():
-    image_dir = "/data/tu_royer_private/emomatch_orig/original/"
+    image_dir = "/path/to/original/faces"
     os.makedirs(image_dir, exist_ok=True)
 
-    landmarks_dir = "/data/tu_royer_private/emomatch_orig/aligned/"
+    landmarks_dir = "/path/to/landmarks"
     os.makedirs(landmarks_dir, exist_ok=True)
 
-    output_dir = "/data/tu_royer_private/emomatch_orig/aligned/"
+    output_dir = "/path/to/outputs"
     os.makedirs(output_dir, exist_ok=True)
 
     return image_dir, landmarks_dir, output_dir
