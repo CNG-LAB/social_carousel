@@ -121,7 +121,7 @@ def run_task(subject, session, language, demo, run_number):
     else:
         n_loops = range(trialsPerRun)    
         fixDur = 12.0
-        storyDur = 12.0
+        storyDur = 14.0
         responseDur = 4.0
 
     # define behavioral arrays
