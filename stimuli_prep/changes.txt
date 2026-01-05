@@ -1,4 +1,5 @@
 2025-12-19 correct german end task instruction
 2025-12-18 add stimuli: emoinf-en, beliefs-de, social
-2026-01-05 add button press recorded in instructions
+2026-01-05 add button press recorded in instructions-en and -de
 2026-01-05 increase story duration to 14 seconds: beliefs and emoinf
+2026-01-05 add emoinf-de, corrected beliefs-de
