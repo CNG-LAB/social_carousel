@@ -127,7 +127,7 @@ def main():
 
     elif task_choice == "movie":
         infoRun = {
-            "Select movie:": ["1", "2"],
+            "Select movie:": ["cloudy", "lotr"],
         }
 
         dlg2 = gui.DlgFromDict(dictionary=infoRun, 
