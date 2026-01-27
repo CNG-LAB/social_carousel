@@ -189,6 +189,8 @@ def run_task(subject, session, language, demo, run_number):
             clip = os.path.join(stimDir, f"{pref}_{numbeT}.AVI")
 
             # Play until movie finishes or user presses a key
+            win.logOnFlip(level=logging.EXP, msg='OFF first fixation')
+            win.flip()
             dims = getDimensions(clip)
             targetWidth = 1024
             aspectRatio = dims[0] / dims[1]
@@ -212,7 +214,7 @@ def run_task(subject, session, language, demo, run_number):
             core.wait(0.005)
 
             # Response
-            win.logOnFlip(level=logging.EXP, msg='OFF story')
+            win.logOnFlip(level=logging.EXP, msg='OFF clip')
             win.flip()
             question_onsets[trial_idx] = clock_global.getTime() - experimentStart
             Txt.setText(open(quest_path, 'r', encoding='utf-8').read())
