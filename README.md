@@ -9,7 +9,7 @@ The carousel was developed and tested on `PsychoPy 2024.2.5`, and compatibility 
 Note: If you're running the task on the stimulus computer at the 7T scanner of the MPI CBS, you can skip the setup.
 
 - Clone (`git clone`) or download (as `.zip`) the repo to your local machine
-- The stimuli can be downloaded [here](https://owncloud.gwdg.de/index.php/s/5onMUgVcrZSakzB) - just ask Jessica for the pw.
+- The stimuli can be downloaded [here](https://owncloud.gwdg.de/index.php/s/bsvB6Cw4pzPLtne) - just ask Jessica for the pw.
   - If you change anything in the stimuli or instructions, please also update the change log and push to the repo.
   - Any local changes (e.g. at the scanner) should be uploaded to the owncloud
 - Keep the same directory structure as in the `.zip` file you just downloaded.
