@@ -17,7 +17,7 @@ Note: If you're running the task on the stimulus computer at the 7T scanner of t
   - "io_root_dir" contains the root path to the stimuli, logs, instructions.
   - "repo_dir" is the path to the repository cloned/downloaded in the first step.
   - After updating to your ow paths, the file should look like this:
-  - [note that for windows this is \\]
+  - [note that for windows this is '\\' ]
     ```
     {
       "io_root_dir": "/Path/to/social_carousel_io",
