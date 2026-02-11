@@ -1,5 +1,5 @@
-# beliefs.py
-# Saxe false beliefs
+# emomaych.py
+# Facial expression of emotion matching task inspired by Hariri task
 
 # import dependencies
 import pathlib

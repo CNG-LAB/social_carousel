@@ -1,14 +1,13 @@
-# How to run alignment
+# Dependencies
 
-Update align_utilities.py with your stimulus parameters (set_params) and paths (set_dirs)
+Alignment of face images relies on the wonderful auto-face-align tool: https://github.com/SourCherries/auto-face-align 
 
-Place the landmarks for your faces: image_landmarks.py
+# How to run the alignment
 
-Run the alignment: align_face_norm.py
+Update the paths and extensions as needed in run_afa_soco.py
+Next, use afa_output_reshape.py (also update the paths) to place the image on a square, gray background. 
 
+# What is SHINE? 
 
-# Maybe you want to use something more established?
-
-I made this without realizing that something better already existed: https://github.com/SourCherries/auto-face-align 
-
-Another case of "Everything has been written, not everything had been read"
+The SHINE (spectrum, histogram, and intensity normalization and equalization) toolbox enables control for a number of low-level image properties. Here, we use it to equate (as much as possible) image intensity histogram and spatial frequency content to minimize low-level feature confounds. 
+Details here: https://link.springer.com/article/10.3758/BRM.42.3.671
