@@ -19,10 +19,8 @@ Note: If you're running the task on the stimulus computer at the 7T scanner of t
   - After updating to your ow paths, the file should look like this:
   - [note that for windows this is  ``` \\ ```]
     ```
-    {
       "io_root_dir": "/Path/to/social_carousel_io",
       "repo_dir": "/Path/to/social_carousel"
-    }
     ```
     
 ## Running the carousel 🌈
@@ -48,7 +46,7 @@ The carousel includes 6 modules. The name of the module is provided as it is nam
 - `beliefs`: False beliefs task using short stories ([Dodell-Feder et al., 2011](https://www.sciencedirect.com/science/article/pii/S1053811910016241))
 - `social`: Social cognition task using geometric shape movies (as implemented in HCP: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
 - `emoinf`: Emotional inference task using short stories ([Jacoby et al., 2016](https://www.sciencedirect.com/science/article/pii/S1053811915010472))
-- `emomatch`: *not yet supported* Emotion matching task using face, body, and shape images (as implemented in HCP: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
+- `emomatch`: *not yet supported* Emotion matching task using face and checkerboards (similar to Hariri task implemented in HCP: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
 
 ### Task-specific notes
 
@@ -66,7 +64,7 @@ Each task leads to a GUI asking the user to select the task run. All participant
 
 ## Sequence parameters 🧲
 
-🤔 to do 🤔
+stay tuned... 👾👾👾
 
 # Contributors 💞
 
