@@ -18,7 +18,6 @@ python beliefs_log2tsv.py \
     ${subjID} \
     ${sesID} \
     ${runID}
-
 ```
 
 Note that the output path should lead to the participant's `/rawdata/func` diretory
