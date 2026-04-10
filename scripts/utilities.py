@@ -46,7 +46,7 @@ def is_valid_subject_id(subj_id):
         return False
     return True
 
-# ---------- CSV writer ----------
+# ---------- CSV writers ----------
 def save_csv(path: Path, design, items, key_vec, RT_vec,
              fix_onsets, story_onsets, stimulus_duration, question_onsets,
              *, experiment_duration=None, ips=None, meta=None):
@@ -84,3 +84,39 @@ def save_csv(path: Path, design, items, key_vec, RT_vec,
         if meta:
             for key, value in meta.items():
                 w.writerow([key, value])
+
+def save_csv_emomatch_behav(path: Path, cond, trialNum, 
+            probeName, foilName, targetName, percepDiff,
+            probePropBlack, foilPropBlack,
+            block_onsets, trial_onsets, targetLocation, 
+            key_vec, acc_vec, RT_vec):
+
+    """Write the current dataset to a CSV file."""
+    totalTrials = len(cond)
+    with path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow([
+            "trial",
+            "condition(0=checker,1=gender,2=emo)",
+            "condTrialNumber",
+            "probeFileName",
+            "foilFileName",
+            "targetFileName",
+            "perceptual_diff_cb",
+            "probePropBlack_cb",
+            "foilPropBlack_cb",
+            "blockOnsetTime",
+            "trialOnsetTime",
+            "targetLocation",
+            "keyPress",
+            "accuracy",
+            "RT(s)"
+        ])
+        for t in range(totalTrials):
+            w.writerow([
+                t + 1, cond[t], trialNum[t],
+                probeName[t], foilName[t], targetName[t], 
+                f"{percepDiff[t]:.4f}", f"{probePropBlack[t]:.4f}", f"{foilPropBlack[t]:.4f}", 
+                f"{block_onsets[t]:.4f}", f"{trial_onsets[t]:.4f}", 
+                targetLocation[t], key_vec[t], acc_vec[t], f"{RT_vec[t]:.4f}"
+            ])

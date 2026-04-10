@@ -46,7 +46,7 @@ The carousel includes 6 modules. The name of the module is provided as it is nam
 - `beliefs`: False beliefs task using short stories ([Dodell-Feder et al., 2011](https://www.sciencedirect.com/science/article/pii/S1053811910016241))
 - `social`: Social cognition task using geometric shape movies (as implemented in HCP: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
 - `emoinf`: Emotional inference task using short stories ([Jacoby et al., 2016](https://www.sciencedirect.com/science/article/pii/S1053811915010472))
-- `emomatch`: *not yet supported* Emotion matching task using face and checkerboards (similar to Hariri task implemented in HCP: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
+- `emomatch`: Emotion matching task using face and checkerboards (similar to Hariri task implemented in HCP, but with different stimuli and two face conditions: [Barch et al., 2013](https://www.sciencedirect.com/science/article/pii/S1053811913005272?via%3Dihub))
 
 ### Task-specific notes
 
