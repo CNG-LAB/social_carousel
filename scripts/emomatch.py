@@ -353,7 +353,7 @@ def run_task(subject, session, language, demo, run_number):
     stimDir = os.path.join(configDirs['io_root_dir'], "stimuli", "emomatch")
 
     # task name
-    task = 'task-beliefs_lang-{lang}_run-{r}'.format(lang=language, r=run_number)
+    task = 'task-emomatch_lang-{lang}_run-{r}'.format(lang=language, r=run_number)
 
     # Define keys
     setKeys = define_keys('0', '5', ['1','2']) 
