@@ -378,21 +378,21 @@ def run_task(subject, session, language, demo, run_number):
 
     # demo
     if demo == 'demo':
-        restDur = 1.0
+        restDur = 4.0
         readyDur = 1.0
         introBlockDur = 1.0
-        stimDur = 2.0
+        stimDur = 3.0
         isiDur = 1.0
         fixDur = 3.0
         num_trials_per_cond = [2, 2, 2] # order always ['checker', 'gender', 'emo']
         n_loops = 1
     else:
-        restDur = 10.0
-        readyDur = 1.5
+        restDur = 12.0
+        readyDur = 2.0
         introBlockDur = 3.0
-        stimDur = 2.0
+        stimDur = 1.5
         isiDur = 1.0
-        fixDur = 10.0
+        fixDur = 8.0
         num_trials_per_cond = [6, 6, 6] # order always ['checker', 'gender', 'emo']
         n_loops = 3
     
@@ -410,8 +410,8 @@ def run_task(subject, session, language, demo, run_number):
     order_cb, order_gen, order_emo = item_orders_for_subject(subject, session, run_number, numCb, numFaces, numFaces)
 
     # Load all items we need into memory
-    marginMin = 0.15
-    marginMax = 0.3
+    marginMin = 0.20
+    marginMax = 0.40
     order_cb_trial = order_cb[0:num_trials_per_cond[0]]
     cb_items, cb_exemplars, perceptualDiff, probePropBlack, foilPropBlack = pick_items_checkerboard(order_cb_trial, 21, marginMin, marginMax, 10)
 
@@ -440,8 +440,8 @@ def run_task(subject, session, language, demo, run_number):
     # display window & get size properties
     win = visual.Window(fullscr=True, color=[0.005, 0.005, 0.005], units='height', colorSpace='rgb')
     win.mouseVisible = False
-    posProbe = (0, 0.25)
-    posChoices = ((-0.25, -0.25), (0.25, -0.25))
+    posProbe = (0, 0.18)
+    posChoices = ((-0.18, -0.18), (0.18, -0.18))
 
     # text and fixation features
     sans = ['Arial', 'Gill Sans MT', 'Helvetica', 'Verdana']
