@@ -25,6 +25,7 @@ Note: If you're running the task on the stimulus computer at the 7T scanner of t
     
 ## Running the carousel 🌈
 
+- The tasks are installed in prep room 004 (the the left when walking towards the MRI suite). The key to this room can be retrieved at reception. Make sure to run the tasks in DEMO mode (see below) when training the participants.
 - Open PsychoPy _**v2024.2.5**_ (NOTE THE VERSION NUMBER - an older 2022 version is also installed at the scanner, and should not be used to run the carousel)
 - In the `PsychoPy Runner`, click the blue **+** sign (add experiment)
 - Navigate directories to add `main.py` to the experiment list; select it and click open.
@@ -36,7 +37,7 @@ Note: If you're running the task on the stimulus computer at the 7T scanner of t
   - <ins>Language</ins>: To run the tasks in english, select `en`. To run the tasks in german, select `de`.
   - <ins>Mode</ins>: To run the full task, select `full`. For testing, debugging, showing examples to the participant, select `demo`. The use of the `demo` option will limit resting-state runs to 5 seconds, and task runs to one trial.
   - <ins>Select task</ins>: Select the task you want to run. Depending on your choice, another GUI might open (see next section).
-- After clicking OK, another dialog box will open. This will prompt you to confirm that you are running the whole-brain or layer (narrow FoV) sequence at the scanner. This is because the order of these sessions is counterbalanced across participants. Note that this information is also logged in the scanning spreadsheet.
+- Follow the scanning spreadsheet and coordinate with the MTAs accordingly to make sure you are running the task in the correct mode (whole-brain vs. layer).
 
 ## The tasks 📋
 

@@ -83,27 +83,27 @@ def main():
         print("Invalid subject ID! It must be a zero-padded 3-digit number (e.g., 001).")
         core.quit()
 
-    # Ask user to confirm session type
-    this_pair = (int(subject_id) - 1) // 2 + 1 
-    startWithWholeBrain = (this_pair % 2) == 1
-    if startWithWholeBrain is True and session == "01":
-        this_message = "Session 01 is WHOLE BRAIN"
-    elif startWithWholeBrain is True and session == "02": 
-        this_message = "Session 02 is LAYER"
-    elif startWithWholeBrain is False and session == "01": 
-        this_message = "Session 01 is LAYER"
-    elif startWithWholeBrain is False and session == "02": 
-       this_message = "Session 02 is WHOLE BRAIN"
-    else:
-        print("Invalid subject/session combination.")
-        core.quit()
+    # # Ask user to confirm session type
+    # this_pair = (int(subject_id) - 1) // 2 + 1 
+    # startWithWholeBrain = (this_pair % 2) == 1
+    # if startWithWholeBrain is True and session == "01":
+    #     this_message = "Session 01 is WHOLE BRAIN"
+    # elif startWithWholeBrain is True and session == "02": 
+    #     this_message = "Session 02 is LAYER"
+    # elif startWithWholeBrain is False and session == "01": 
+    #     this_message = "Session 01 is LAYER"
+    # elif startWithWholeBrain is False and session == "02": 
+    #    this_message = "Session 02 is WHOLE BRAIN"
+    # else:
+    #     print("Invalid subject/session combination.")
+    #     core.quit()
 
-    dlg_order = gui.Dlg(title="For this subject...")
-    dlg_order.addText(this_message + "\nPress OK to continue.")
-    dlg_order.show()
+    # dlg_order = gui.Dlg(title="For this subject...")
+    # dlg_order.addText(this_message + "\nPress OK to continue.")
+    # dlg_order.show()
 
-    if not dlg_order.OK:
-        core.quit()
+    # if not dlg_order.OK:
+    #     core.quit()
 
     # -----------------------------
     # Special extra GUI for specific tasks
