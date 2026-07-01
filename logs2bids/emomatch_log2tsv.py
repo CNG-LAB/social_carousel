@@ -8,7 +8,8 @@ python emomatch_log2tsv.py \
     /output/tsv/here \
     pilot06 \
     02 \
-    02
+    02 \
+    1p9mm
 """
 ################################################################
 
@@ -22,6 +23,7 @@ outpath = sys.argv[2]
 subj = sys.argv[3]
 ses = sys.argv[4]
 run = sys.argv[5]
+acq = sys.argv[6]
 
 # subject id
 bids_id = 'sub-{subject}_ses-{session}'.format(subject=subj, session=ses)
@@ -53,7 +55,7 @@ def transform_csv_to_tsv(input_csv_path, output_tsv_path, column_mapping, column
 if __name__ == "__main__":
     
     # out name
-    outfile = '{out_here}/{id_here}_task-emomatch_run-{run_here}_events.tsv'.format(out_here=outpath, id_here=bids_id, run_here=run)
+    outfile = '{out_here}/{id_here}_task-emomatch_acq-{acq_here}_run-{run_here}_events.tsv'.format(out_here=outpath, id_here=bids_id, acq_here=acq, run_here=run)
 
     # Define how columns should be renamed
     column_mapping = {

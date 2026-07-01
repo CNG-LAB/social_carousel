@@ -8,7 +8,8 @@ python emoinf_log2tsv.py \
     /output/tsv/here \
     pilot06 \
     02 \
-    02
+    02 \
+    1p9mm
 """
 ################################################################
 
@@ -23,6 +24,7 @@ outpath = sys.argv[2]
 subj = sys.argv[3]
 ses = sys.argv[4]
 run = sys.argv[5]
+acq = sys.argv[6]
 
 # log parser
 def read_log_to_dataframe(log_file_path):
@@ -173,5 +175,5 @@ df_bids = df_bids.sort_values('original_row_number').reset_index(drop=True)
 df_bids = df_bids.drop(columns=['original_row_number'])
 
 ## Write to tsv
-out_file = '{out_here}/{id_here}_task-emoinf_run-{run_here}_events.tsv'.format(out_here=outpath, id_here=bids_id, run_here=run)
+out_file = '{out_here}/{id_here}_task-emoinf_acq-{acq_here}_run-{run_here}_events.tsv'.format(out_here=outpath, id_here=bids_id, acq_here=acq, run_here=run)
 df_bids.to_csv(out_file, sep='\t', index=False)

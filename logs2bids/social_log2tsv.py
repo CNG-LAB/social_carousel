@@ -8,7 +8,8 @@ python social_log2tsv.py \
     /output/tsv/here \
     pilot06 \
     02 \
-    02
+    02 \
+    1p9mm
 """
 ################################################################
 
@@ -23,6 +24,7 @@ outpath = sys.argv[2]
 subj = sys.argv[3]
 ses = sys.argv[4]
 run = sys.argv[5]
+acq = sys.argv[6]
 
 # log parser
 def read_log_to_dataframe(log_file_path):
@@ -75,7 +77,7 @@ df_fixation = df_filter0[
 # 2) Questions on/off filter
 df_question = df_filter0[
     df_filter0["event_details"].str.startswith(("DISPLAY clip"), na=False) | 
-    df_filter0["event_details"].isin(["OFF story"])
+    df_filter0["event_details"].isin(["OFF clip"])
 ]
 
 # 3) Response filter
@@ -188,15 +190,15 @@ for row in range(n_rows):
             tmp_resp = 0
         check_resp = tmp_resp == 1
         if not check_resp:
-             df_bids.loc[row, 'accuracy'] = 0 # response is incorrect
+             df_bids.loc[row, 'accuracy'] = '0' # response is incorrect
         else:
              # is response overtime?
              delay_resp_given = df_bids.onset[row] + df_bids.duration[row]
              if not delay_resp_given > df_bids.onset[row+1]:
-                 df_bids.loc[row, 'accuracy'] = 1 # response is correct and within response window
+                 df_bids.loc[row, 'accuracy'] = '1' # response is correct and within response window
              else:
-                 df_bids.loc[row, 'accuracy'] = 99 # response is correct but overtime
+                 df_bids.loc[row, 'accuracy'] = '99' # response is correct but overtime
 
 ## Write to tsv
-out_file = '{out_here}/{id_here}_task-social_run-{run_here}_events.tsv'.format(out_here=outpath, id_here=bids_id, run_here=run)
+out_file = '{out_here}/{id_here}_task-social_acq-{acq_here}_run-{run_here}_events.tsv'.format(out_here=outpath, id_here=bids_id, acq_here=acq, run_here=run)
 df_bids.to_csv(out_file, sep='\t', index=False)
