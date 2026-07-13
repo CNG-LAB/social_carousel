@@ -46,7 +46,6 @@ def item_orders_for_subject(subj_id: str, session: str):
     rng = np.random.default_rng(seed)
     order_m = rng.permutation(np.arange(1, 11))
     order_r = rng.permutation(np.arange(1, 11))
-
     if session == "01":
         if id_in_pair == 0:
             this_m = order_m[0:5]
@@ -103,10 +102,16 @@ def run_task(subject, session, language, demo, run_number):
 
     # set item order
     order_m_all, order_r_all = item_orders_for_subject(subject, session)
-    if run_number == '1':
+    if run_number == '1' and design_label == 'D1':
         items_m_run = order_m_all[:2].tolist()
         items_r_run = order_r_all[:3].tolist()
-    else:
+    elif run_number == '2' and design_label == 'D1':
+        items_m_run = order_m_all[3:].tolist()
+        items_r_run = order_r_all[2:].tolist()
+    elif run_number == '1' and design_label == 'D2':
+        items_m_run = order_m_all[:3].tolist()
+        items_r_run = order_r_all[:2].tolist()
+    elif run_number == '2' and design_label == 'D2':
         items_m_run = order_m_all[2:].tolist()
         items_r_run = order_r_all[3:].tolist()
 
@@ -120,8 +125,8 @@ def run_task(subject, session, language, demo, run_number):
         questDur = 3.0
     else:
         n_loops = range(trialsPerRun)    
-        fixDur = 15.0
-        questDur = 3.0
+        fixDur = 1#15.0
+        questDur = 1#3.0
 
     # define behavioral arrays
     key_vec = [0] * trialsPerRun
