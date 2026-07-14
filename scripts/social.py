@@ -125,8 +125,8 @@ def run_task(subject, session, language, demo, run_number):
         questDur = 3.0
     else:
         n_loops = range(trialsPerRun)    
-        fixDur = 1#15.0
-        questDur = 1#3.0
+        fixDur = 15.0
+        questDur = 3.0
 
     # define behavioral arrays
     key_vec = [0] * trialsPerRun
